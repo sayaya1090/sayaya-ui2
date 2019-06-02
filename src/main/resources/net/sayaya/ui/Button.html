@@ -1,0 +1,5 @@
+<button :type='"button"' :class="style" :disabled="!enable" :style='map("fontWeight", weight)'>
+	<icon v-if="iconLeft!=null" :icon="iconLeft" :weight="weight" :style='map("paddingRight", "0.2rem")'></icon>
+	{{ label }}
+	<icon v-if="iconRight!=null" :icon="iconRight" :weight="weight" :style='map("paddingLeft", "0.2rem")'></icon>
+</button>

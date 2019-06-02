@@ -1,0 +1,63 @@
+apply plugin: 'java'
+apply plugin: 'gwt-base'
+apply plugin: 'maven'
+
+group 'net.sayaya'
+archivesBaseName = 'ui'
+version '1.0'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceCompatibility = 11
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+dependencies {
+	compileOnly('com.google.gwt:gwt-user:2.8.2')
+	compileOnly('com.google.gwt:gwt-dev:2.8.2')
+	compileOnly('com.google.guava:guava-gwt:26.0-jre')
+	compileOnly('com.axellience:vue-gwt:1.0-beta-9')
+	compileOnly('com.axellience:vue-gwt-processors:1.0-beta-9')
+	compileOnly('org.projectlombok:lombok:1.18.2')
+}
+
+buildscript {
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+	}
+}
+
+compileJava {
+	mustRunAfter(processResources)
+	options.compilerArgs << '-parameters'
+	options.incremental = false
+	sourceSets {
+		main {
+			resources {
+				srcDirs 'src/main/resources'
+			}
+			output.resourcesDir = "build/classes/java/main"
+		}
+	}
+}
+
+gwt {
+	gwtVersion = '2.8.2'
+	minHeapSize = "512M"
+	maxHeapSize = "1024M"
+}
+
+jar {
+	from sourceSets.main.allJava
+	manifest {
+		attributes 'Implementation-Title': archivesBaseName,
+				'Implementation-Version': version
+	}
+}
+
